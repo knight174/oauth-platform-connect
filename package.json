@@ -24,12 +24,13 @@
     "url": "https://github.com/knight174/oauth-platform-connect"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.7",
-    "nodemon": "^3.1.9",
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.9"
   },
   "engines": {
     "node": ">=18.0.0"

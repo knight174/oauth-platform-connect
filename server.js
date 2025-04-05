@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const querystring = require('querystring');
+const cors = require('cors');
 const path = require('path');
 const app = express();
 
@@ -18,6 +19,22 @@ const GITHUB_REDIRECT_URI = process.env.GITHUB_REDIRECT_URI;
 
 // 静态文件服务
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 添加 CORS 支持
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? ['https://oauth-platform-connect.vercel.app']
+        : 'http://localhost:3000',
+  })
+);
+
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
 // 首页，重定向到登录页面
 app.get('/', (req, res) => {
