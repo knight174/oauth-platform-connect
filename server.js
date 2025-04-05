@@ -23,7 +23,11 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === 'production'
-        ? ['https://oauth-platform-connect.vercel.app']
+        ? [
+            'https://oauth-platform-connect.vercel.app',
+            'oauth-platform-connect-knight174s-projects.vercel.app',
+            'oauth-platform-connect-knight174-knight174s-projects.vercel.app',
+          ]
         : 'http://localhost:3000',
   })
 );
