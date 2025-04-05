@@ -1,0 +1,37 @@
+{
+  "name": "oauth-platform-connect",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "oauth",
+    "github",
+    "gitee",
+    "express",
+    "authentication",
+    "oauth2",
+    "sso"
+  ],
+  "author": "knight174",
+  "license": "MIT",
+  "description": "A unified OAuth authentication solution supporting multiple platforms like GitHub and Gitee",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knight174/oauth-platform-connect"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7",
+    "nodemon": "^3.1.9",
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

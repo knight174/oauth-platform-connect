@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="OAuth App" />
+    <meta
+      name="keywords"
+      content="oauth, github, gitee, express, authentication, oauth2, sso"
+    />
+    <meta name="author" content="knight174" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>My OAuth App</title>
+  </head>
+  <body>
+    <h1>My OAuth App 第三方登录</h1>
+    <section>
+      <h2>Login with Gitee</h2>
+      <div>
+        <h3>Select Scopes:</h3>
+        <input type="checkbox" id="gitee_user_info" value="user_info" checked />
+        <label for="gitee_user_info">访问你的个人信息、最新动态等</label><br />
+        <input type="checkbox" id="gitee_projects" value="projects" />
+        <label for="gitee_projects">查看、创建、更新你的项目</label><br />
+        <input type="checkbox" id="gitee_pull_requests" value="pull_requests" />
+        <label for="gitee_pull_requests"
+          >查看、发布、更新你的 pull request</label
+        ><br />
+        <input type="checkbox" id="gitee_issues" value="issues" />
+        <label for="gitee_issues">查看、发布、更新你的 issue</label><br />
+        <input type="checkbox" id="gitee_notes" value="notes" />
+        <label for="gitee_notes"
+          >查看、发布、管理你在项目、代码片段中的评论</label
+        ><br />
+        <input type="checkbox" id="gitee_keys" value="keys" />
+        <label for="gitee_keys">查看、部署、删除你的公钥</label><br />
+        <input type="checkbox" id="gitee_hook" value="hook" />
+        <label for="gitee_hook">查看、创建、更新你的 Webhook</label><br />
+        <input type="checkbox" id="gitee_groups" value="groups" />
+        <label for="gitee_groups">查看、管理你的组织以及成员</label><br />
+        <input type="checkbox" id="gitee_gists" value="gists" />
+        <label for="gitee_gists">查看、删除、更新你的代码片段</label><br />
+        <input type="checkbox" id="gitee_enterprises" value="enterprises" />
+        <label for="gitee_enterprises">查看、管理你的企业以及成员</label><br />
+      </div>
+      <button id="gitee-login-btn">Login with Gitee</button>
+    </section>
+
+    <hr />
+
+    <section>
+      <h2>Login with GitHub</h2>
+      <div>
+        <h3>Select Scopes:</h3>
+        <input type="checkbox" id="github_user" value="read:user" checked />
+        <label for="github_user">读取用户信息</label><br />
+        <input type="checkbox" id="github_repo" value="repo" />
+        <label for="github_repo">完整的仓库访问权限</label><br />
+        <input type="checkbox" id="github_repo_status" value="repo:status" />
+        <label for="github_repo_status">仓库提交状态访问权限</label><br />
+        <input type="checkbox" id="github_delete_repo" value="delete_repo" />
+        <label for="github_delete_repo">删除仓库权限</label><br />
+        <input
+          type="checkbox"
+          id="github_notifications"
+          value="notifications"
+        />
+        <label for="github_notifications">通知访问权限</label><br />
+        <input type="checkbox" id="github_gist" value="gist" />
+        <label for="github_gist">Gist 访问权限</label><br />
+        <input type="checkbox" id="github_user_email" value="user:email" />
+        <label for="github_user_email">电子邮件访问权限</label><br />
+        <input type="checkbox" id="github_user_follow" value="user:follow" />
+        <label for="github_user_follow">关注用户权限</label><br />
+        <input type="checkbox" id="github_project" value="project" />
+        <label for="github_project">项目管理权限</label><br />
+        <input type="checkbox" id="github_workflow" value="workflow" />
+        <label for="github_workflow">GitHub Actions 工作流程权限</label><br />
+        <input type="checkbox" id="github_packages" value="write:packages" />
+        <label for="github_packages">包管理权限</label><br />
+        <input type="checkbox" id="github_org" value="admin:org" />
+        <label for="github_org">组织管理权限</label><br />
+      </div>
+      <button id="github-login-btn">Login with GitHub</button>
+    </section>
+
+    <script>
+      window.addEventListener('load', () => {
+        // 重置选项
+        document
+          .querySelectorAll('input[type="checkbox"]')
+          .forEach((checkbox) => {
+            if (
+              checkbox.id === 'gitee_user_info' ||
+              checkbox.id === 'github_user'
+            ) {
+              checkbox.checked = true; // 默认勾选基础权限
+            } else {
+              checkbox.checked = false;
+            }
+          });
+
+        // Gitee login button event listener
+        const giteeLoginBtn = document.getElementById('gitee-login-btn');
+        giteeLoginBtn.addEventListener('click', async () => {
+          try {
+            const scopes = Array.from(
+              document.querySelectorAll('input[id^="gitee_"]:checked')
+            )
+              .map((cb) => cb.value)
+              .join(' ');
+
+            const response = await fetch(
+              `/oauth/authorize?scopes=${encodeURIComponent(scopes)}`
+            );
+            const data = await response.json();
+            window.location.href = data.url;
+          } catch (error) {
+            console.error('Error getting Gitee auth URL:', error);
+          }
+        });
+
+        // GitHub login button event listener
+        const githubLoginBtn = document.getElementById('github-login-btn');
+        githubLoginBtn.addEventListener('click', async () => {
+          try {
+            const scopes = Array.from(
+              document.querySelectorAll('input[id^="github_"]:checked')
+            )
+              .map((cb) => cb.value)
+              .join(' ');
+
+            const response = await fetch(
+              `/oauth/github/authorize?scopes=${encodeURIComponent(scopes)}`
+            );
+            const data = await response.json();
+            window.location.href = data.url;
+          } catch (error) {
+            console.error('Error getting GitHub auth URL:', error);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
