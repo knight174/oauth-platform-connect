@@ -1,6 +1,6 @@
 # OAuth Platform Connect
 
-[English](#english) | [中文](#中文)
+[English](#english) | [中文](#中文) | [Demo](https://knight174.github.io/oauth-platform-connect)
 
 ## English
 
